@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mframe.mapper.UserMapper">
+
+     <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mframe.model.User">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId" />
+        <result column="user_name" property="userName" />
+    </resultMap>
+
+    <sql id="base_column">
+       id AS id,
+       user_id AS userId,
+       user_name AS userName
+    </sql>
+
+<!--     <select id="selectByUserId" parameterType="int" resultType="com.mframe.model.User" >
+ -->    
+    <select id="selectByUserId" parameterType="int" resultMap="BaseResultMap" >    
+        select 
+           *
+           <!-- <include refid="base_column" /> -->
+        from `mycat_user` where user_id = #{userId}
+    </select>
+
+    <insert id="saveUser" parameterType="com.mframe.model.User" >
+        insert into mycat_user(user_id, user_name) values (#{userId}, #{userName})
+    </insert>
+    
+</mapper>
