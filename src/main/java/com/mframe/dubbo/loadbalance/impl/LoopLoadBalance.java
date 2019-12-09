@@ -1,6 +1,7 @@
 package com.mframe.dubbo.loadbalance.impl;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.mframe.dubbo.loadbalance.LoadBalance;
 
@@ -11,14 +12,11 @@ import com.mframe.dubbo.loadbalance.LoadBalance;
  */
 public class LoopLoadBalance implements LoadBalance {
 
-	private static int index;
+	private AtomicInteger index = new AtomicInteger(0);
 	
-	@Override
 	public String chooseServer(List<String> serverList) {
-		if(index >= serverList.size()) {
-			index = 0;
-		}
-		return serverList.get(index++);
+		int i = index.getAndIncrement() % serverList.size();
+		return serverList.get(i);
 	}
 
 }
